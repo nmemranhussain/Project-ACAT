@@ -230,3 +230,15 @@ data/processed/*.parquet
 chroma_db/
 chroma_hf_rag/
 model_artifacts/
+
+# Project-specific data & model artifacts
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*.csv
+data/processed/*.parquet
+!data/processed/.gitkeep
+*.joblib
+*.bst
+chroma_db/
+chroma_hf_rag/
+model_artifacts/
