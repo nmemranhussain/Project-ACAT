@@ -129,3 +129,105 @@ flowchart TD
     H --> I[Executive Bedside Brief &<br/>Drug Contraindication Check]
     I --> J[Point-of-Care Gradio Dashboard]
 ```
+
+## Empirical Bedside Demonstration: Acute Cardiorenal Encounter
+
+---
+
+### 1. Patient Profile & Clinical Input
+* **Demographics:** 73-year-old male
+* **Presentation:** NYHA Class IV dyspnea
+* **Left Ventricular Ejection Fraction (LVEF):** 24%
+* **Serum Creatinine:** 2.4 mg/dL
+* **Systolic Blood Pressure (SBP):** 88 mmHg
+
+---
+
+### 2. Multi-Agent Clinical Pipeline
+
+### Agent 1: Clinical Extraction
+Parsed unstructured clinical presentation into a validated schema:
+
+```json
+{
+  "age": 73,
+  "is_male": 1,
+  "has_diabetes": 1,
+  "ejection_fraction": 24.0,
+  "serum_creatinine": 2.4,
+  "systolic_bp": 88
+}
+```
+
+# 4. Healthcare Economics & Production Drift Governance
+
+## CMS HRRP 30-Day Readmission Financial Impact ($N = 10,014$ Test Cohort)
+
+Translating predictive accuracy into clinical operations using standard CMS reimbursement and penalty benchmarks:
+
+* **Average Cost of Acute 30-Day Readmission Penalty ($C_{\text{readmit}}$):** $\$15,200$
+* **Outpatient Care Management Reimbursement (CPT 99490 / 99491):** $\$744\text{ / year}$
+* **Care Coordination Outreach Cost per Flagged Patient:** $\$650$
+* **Structured Guideline-Directed Medical Therapy (GDMT) Efficacy:** $65\%$ reduction in readmissions
+
+$$\text{Net Value Preserved} = \text{CDSS Operational Net} - \text{Default Status Quo Loss}$$
+
+---
+
+### Economic Modeling Breakdown
+
+| Economic Modeling Parameter | Financial Impact Value | Operational Derivation |
+| :--- | :--- | :--- |
+| **Evaluated Holdout Cohort** | $10,014\text{ encounters}$ | Total unseen audit population |
+| **Status Quo Default Penalty Exposure** | $-\$25,520,800.00$ | All $1,679$ events missed ($1,679 \times -\$15,200$) |
+| **Net True Positive Clinical Value** | $+\$11,709,476.00$ | $1,174\text{ TP}$ patients managed ($\text{TP} \times \$9,974\text{ net}$) |
+| **False Positive Outreach Overhead** | $-\$409,500.00$ | $630\text{ FP}$ patients enrolled ($630 \times -\$650$) |
+| **Uncaptured False Negative Penalties** | $-\$7,676,000.00$ | $505$ unprevented readmissions ($505 \times -\$15,200$) |
+| **CDSS Net Operational Position** | $+\$3,623,976.00$ | Total net programmatic performance |
+| **Total Institutional Value Preserved** | $\mathbf{+\$29,144,776.00}$ | Net delta vs unmitigated default hospital loss |
+
+---
+
+# MLOps Real-Time Population Stability Index (PSI) Drift Monitoring
+
+To guarantee safety following deployment, real-time background jobs evaluate feature distributions against baseline training distributions:
+
+$$\text{PSI} = \sum \left( \text{Actual}\% - \text{Expected}\% \right) \times \ln\left( \frac{\text{Actual}\%}{\text{Expected}\%} \right)$$
+
+| Clinical Biomarker | Evaluated PSI | MLOps Operational Status | Quality-Control Action |
+| :--- | :--- | :--- | :--- |
+| `age` | 0.4681 | 🚨 RED ALERT (Severe Drift) | Automated Retraining Pipeline Triggered |
+| `ejection_fraction` | 0.4079 | 🚨 RED ALERT (Severe Drift) | Distribution shift in heart failure severity |
+| `serum_creatinine` | 0.9390 | 🚨 RED ALERT (Severe Drift) | Acute cardiorenal patient cohort influx |
+| `systolic_bp` | 0.0010 | 🟢 GREEN (Stable) | No hemodynamic measurement drift detected |
+| `prior_comorbidity_count` | 0.0010 | 🟢 GREEN (Stable) | Stable underlying chronic disease coding |
+
+---
+
+## Repository Structure & Reproducibility Guide
+Project-ACAT/
+├── .gitignore
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── data/
+│   ├── processed/
+│   │   ├── train.parquet                   # 39,986 leak-free training encounters
+│   │   ├── test.parquet                    # 10,014 unseen audit test encounters
+│   │   ├── shap_summary_plot.png           # Global TreeSHAP beeswarm visualization
+│   │   ├── shap_patient_waterfall.png      # Local observation waterfall attribution
+│   │   ├── financial_roi_summary.json      # CMS HRRP penalty modeling audit
+│   │   └── psi_drift_report.json           # MLOps Population Stability Index audit
+│   └── chroma_hf_rag/                      # ChromaDB vector store directory
+├── guidelines/
+│   └── aha_hf_guidelines_2022.json         # Structured 2022 AHA/ACC/HFSA guidelines
+├── notebooks/
+│   └── 01_ACAT_Acute_Care_Agentic_Triage.ipynb  # End-to-end execution notebook
+└── src/
+    ├── __init__.py
+    ├── data_pipeline.py                    # OMOP SQL extraction and StratifiedGroupKFold
+    ├── model_engine.py                     # LightGBM inference & native TreeSHAP class
+    ├── model.joblib                        # Serialized LightGBM classifier binary
+    ├── model_metadata.json                 # Serialized threshold and feature metadata
+    ├── rag_engine.py                       # Clinical guideline RAG retriever class
+    └── agents.py                           # 4-agent consensus engine and Gradio UI
