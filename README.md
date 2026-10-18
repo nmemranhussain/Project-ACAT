@@ -35,23 +35,6 @@ Project ACAT is organized around five foundational research questions addressing
 
 ---
 
-## System Architecture
-
-```mermaid
-flowchart TD
-    A[Unstructured Clinical Narrative] --> B[Agent 1: Vitals Normalizer<br/>Gemini 2.5 Flash + Pydantic]
-    B --> C[PatientVitals Schema<br/>LVEF, Cr, SBP, Age, Comorbidities]
-    C --> D[Agent 2: Risk Analyst<br/>LightGBM + TreeSHAP Engine]
-    D --> E{Predicted Risk >= 0.7269?}
-    E -- Yes: Critical --> F[Agent 3: Guideline Specialist<br/>ChromaDB RAG - 2022 AHA Guidelines]
-    E -- No: Standard --> G[Standard Monitoring Protocol]
-    F --> H[Agent 4: Clinical Auditor<br/>Gemini 2.5 Flash]
-    G --> H
-    H --> I[Executive Bedside Brief &<br/>Drug Contraindication Check]
-    I --> J[Point-of-Care Gradio Dashboard]
-```
----
-
 ## Data Provenance & Preprocessing Architecture
 
 ### 1. Cohort Extraction (OMOP CDM v5.3)
