@@ -1,0 +1,63 @@
+[
+    {
+        "text": "Recommendation for SGLT2 Inhibitors in HFrEF: In patients with symptomatic chronic HFrEF (LVEF <= 40%), SGLT2 inhibitors (Dapagliflozin 10 mg once daily or Empagliflozin 10 mg once daily) are recommended to reduce hospitalization for heart failure and cardiovascular mortality, irrespective of the presence or absence of type 2 diabetes mellitus. (Class 1, LOE A).",
+        "metadata": {
+            "source": "2022 AHA/ACC/HFSA Heart Failure Guidelines",
+            "section": "Pharmacological Treatment for HFrEF",
+            "drug_class": "SGLT2i",
+            "lvef_max": 40.0,
+            "min_egfr": 20.0,
+            "recommendation_class": "Class 1",
+            "evidence_level": "Level A"
+        }
+    },
+    {
+        "text": "Recommendation for ARNi (Angiotensin Receptor-Neprilysin Inhibitors) in HFrEF: In patients with chronic symptomatic HFrEF (LVEF <= 40%) NYHA class II or III, the use of Sacubitril/Valsartan is recommended over ACEi or ARB to reduce morbidity and mortality. Initiation requires SBP >= 100 mmHg. A 36-hour washout period is strictly required when switching from an ACE inhibitor to prevent angioedema. (Class 1, LOE A).",
+        "metadata": {
+            "source": "2022 AHA/ACC/HFSA Heart Failure Guidelines",
+            "section": "RAAS Inhibition and Neprilysin Inhibition",
+            "drug_class": "ARNi",
+            "lvef_max": 40.0,
+            "precaution": "Hypotension (SBP < 100 mmHg) and Angioedema history",
+            "recommendation_class": "Class 1",
+            "evidence_level": "Level A"
+        }
+    },
+    {
+        "text": "Recommendation for Mineralocorticoid Receptor Antagonists (MRA): In patients with HFrEF (LVEF <= 35%) and NYHA class II to IV symptoms, an MRA (Spironolactone 25-50 mg daily or Eplerenone 25-50 mg daily) is recommended to reduce mortality and HF hospitalization. Laboratory prerequisites: Serum potassium must be < 5.0 mEq/L and estimated GFR (eGFR) must be > 30 mL/min/1.73m2 (or serum creatinine <= 2.5 mg/dL in men, <= 2.0 mg/dL in women) to avoid lethal hyperkalemia. (Class 1, LOE A).",
+        "metadata": {
+            "source": "2022 AHA/ACC/HFSA Heart Failure Guidelines",
+            "section": "Mineralocorticoid Receptor Antagonists",
+            "drug_class": "MRA",
+            "lvef_max": 35.0,
+            "max_creatinine": 2.5,
+            "contraindication": "Hyperkalemia (K+ >= 5.0 mEq/L) or eGFR <= 30 mL/min/1.73m2",
+            "recommendation_class": "Class 1",
+            "evidence_level": "Level A"
+        }
+    },
+    {
+        "text": "Recommendation for Evidence-Based Beta-Blockers: In patients with HFrEF with current or prior symptoms, treatment with 1 of the 3 proven beta-blockers (Bisoprolol, Carvedilol, or sustained-release Metoprolol Succinate) is recommended to reduce mortality and hospitalization. Patients must be clinically euvolemic and hemodynamically stable prior to initiation or upward titration. (Class 1, LOE A).",
+        "metadata": {
+            "source": "2022 AHA/ACC/HFSA Heart Failure Guidelines",
+            "section": "Beta-Blocker Initiation and Maintenance",
+            "drug_class": "Beta-Blocker",
+            "lvef_max": 40.0,
+            "precaution": "Acute decompensated fluid overload or cardiogenic shock",
+            "recommendation_class": "Class 1",
+            "evidence_level": "Level A"
+        }
+    },
+    {
+        "text": "Management of Acute Decompensation with Hypotension and Cardiorenal Syndrome: In patients presenting with decompensated heart failure, low systolic blood pressure (< 90 mmHg), and worsening renal function (creatinine > 2.0 mg/dL), vasodilators and high-dose neurohormonal inhibitors should be temporarily held or cautiously reduced while restoring hemodynamic perfusion and establishing euvolemia with monitored IV loop diuretics. (Class 2a, LOE B-NR).",
+        "metadata": {
+            "source": "2022 AHA/ACC/HFSA Heart Failure Guidelines",
+            "section": "Cardiogenic Shock and Advanced HF Triage",
+            "drug_class": "Acute Triage Protocol",
+            "lvef_max": 30.0,
+            "precaution": "Cardiogenic shock, profound hypotension",
+            "recommendation_class": "Class 2a",
+            "evidence_level": "Level B-NR"
+        }
+    }
+]
