@@ -1,0 +1,12 @@
+{
+    "Evaluated Patients": 10014,
+    "True Positives Flagged": 1174,
+    "False Positives Incurred": 630,
+    "False Negatives Missed": 505,
+    "Net TP Clinical Value": "$11,709,476.00",
+    "False Positive Outreach Cost": "$-409,500.00",
+    "Missed Readmission Penalties": "$-7,676,000.00",
+    "CDSS Net Operational Position": "$3,623,976.00",
+    "Status Quo Default Penalty Exposure": "$-25,520,800.00",
+    "Total Financial Value Preserved": "$29,144,776.00"
+}

@@ -1,0 +1,22 @@
+{
+    "age": {
+        "psi": 0.4681,
+        "status": "RED ALERT (Severe Drift -> Retraining Triggered)"
+    },
+    "ejection_fraction": {
+        "psi": 0.4079,
+        "status": "RED ALERT (Severe Drift -> Retraining Triggered)"
+    },
+    "serum_creatinine": {
+        "psi": 0.939,
+        "status": "RED ALERT (Severe Drift -> Retraining Triggered)"
+    },
+    "systolic_bp": {
+        "psi": 0.001,
+        "status": "GREEN (Stable)"
+    },
+    "prior_comorbidity_count": {
+        "psi": 0.001,
+        "status": "GREEN (Stable)"
+    }
+}
