@@ -197,9 +197,15 @@ $$\text{Net Value Preserved} = \text{CDSS Operational Net} - \text{Default Statu
 | **Total Institutional Value Preserved** | **+$29,144,776.00** | **Net savings and value preserved** relative to status quo default exposure. |
 
 #### MLOps Real-Time Population Stability Index (PSI) Drift Monitoring
-To guarantee reliability and detect distribution shifts in production, real-time background jobs quantify feature stability between baseline training distributions and incoming encounter streams[cite: 1]:
 
-$$\text{PSI} = \sum \left( \text{Actual}\% - \text{Expected}\% \right) \times \ln\left( \frac{\text{Actual}\%}{\text{Expected}\%} \right)$$
+To guarantee post-deployment reliability and detect clinical covariate shifts in production, real-time background jobs quantify feature drift between baseline training cohorts and incoming inpatient streams using the **Population Stability Index (PSI)**:
+
+$$\text{PSI} = \sum_{b=1}^{B} \left( P_{\text{actual}, b} - P_{\text{expected}, b} \right) \times \ln\left( \frac{P_{\text{actual}, b}}{P_{\text{expected}, b}} \right)$$
+
+where $B$ denotes the number of empirical quantile bins ($B = 10$), and $P_b$ represents the relative sample frequency of encounters falling within bin $b$. In alignment with standard clinical MLOps monitoring protocols:
+- **$\text{PSI} < 0.10$ (Stable):** Insignificant distributional shift; model calibration is preserved.
+- **$0.10 \le \text{PSI} < 0.25$ (Moderate Drift):** Noticeable population variation; triggers enhanced clinical audit frequency.
+- **$\text{PSI} \ge 0.25$ (Severe Drift):** Critical population divergence; triggers automated alerts and dispatches the retraining pipeline.
 
 | Clinical Biomarker | Evaluated PSI | MLOps Drift Status | Automated Quality-Control Action |
 | :--- | :---: | :---: | :--- |
