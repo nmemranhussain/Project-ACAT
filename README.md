@@ -340,21 +340,28 @@ If you utilize the Project ACAT architecture or build upon these findings, pleas
 
 ```bibtex
 @misc{hussain2026acat,
-  author = {Hussain, N M Emran},
-  title = {Project ACAT: Leakage-Free Cohort Partitioning, Cost-Sensitive TreeSHAP Modeling, and Guideline-Grounded Multi-Agent Decision Support for 30-Day Heart Failure Readmission Risk},
-  year = {2026},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  howpublished = {https://github.com/nmemranhussain/Project-ACAT}
+  author       = {Hussain, N M Emran},
+  title        = {Project ACAT: Leakage-Free Cohort Partitioning, Cost-Sensitive 
+                  TreeSHAP Modeling, and Guideline-Grounded Multi-Agent Decision 
+                  Support for 30-Day Heart Failure Readmission Risk},
+  year         = {2026},
+  publisher    = {GitHub},
+  journal      = {GitHub repository},
+  howpublished = {\url{[https://github.com/nmemranhussain/Project-ACAT](https://github.com/nmemranhussain/Project-ACAT)}}
 }
 
 @article{heidenreich2022aha,
-  author = {Heidenreich, Paul A. and Bozkurt, Biykem and Aguilar, David and Allen, Larry A. and Byun, Joni J. and Colvin, Monica M. and Deswal, Anita and Drazner, Mark H. and Dunlay, Shannon M. and Evers, Linda R. and others},
-  title = {2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines},
-  journal = {Circulation},
-  volume = {145},
-  number = {18},
-  pages = {e895--e1032},
-  year = {2022},
-  publisher = {Am Heart Assoc}
+  author       = {Heidenreich, Paul A. and Bozkurt, Biykem and Aguilar, David 
+                  and Allen, Larry A. and Byun, Joni J. and Colvin, Monica M. 
+                  and Deswal, Anita and Drazner, Mark H. and Dunlay, Shannon M. 
+                  and Evers, Linda R. and others},
+  title        = {2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure: 
+                  A Report of the American College of Cardiology/American Heart 
+                  Association Joint Committee on Clinical Practice Guidelines},
+  journal      = {Circulation},
+  volume       = {145},
+  number       = {18},
+  pages        = {e895--e1032},
+  year         = {2022},
+  publisher    = {Am Heart Assoc}
 }
