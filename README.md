@@ -84,6 +84,22 @@ To establish true out-of-sample generalizability, Project ACAT enforces strict p
 | **Audit Test Cohort** | 10,014 | 9,628 | 3.85% | 1,679 events | 16.77% | **0 Patients (Strict Isolation)** |
 | **Total Cohort** | **50,000** | **48,144** | **3.71%** | **8,667 events** | **17.33%** | **0.00% Patient Leakage** |
 
+### 5. Clinical Feature Data Dictionary
+
+The predictive feature space is derived from longitudinal OMOP CDM v5.3 tables across `condition_occurrence`, `measurement`, `person`, and `visit_occurrence`. All baseline clinical covariates are windowed strictly *prior to* or *at* the index admission to prevent prospective leakage:
+
+| Feature Name | OMOP Domain / Table | Concept Identifier / Standard | Data Type | Value Range / Units | Clinical Rationale & Extraction Window |
+| :--- | :--- | :--- | :---: | :---: | :--- |
+| `target_outcome_30d` | `condition_occurrence` | OMOP Inpatient Lookahead | Binary (0/1) | $\{0, 1\}$ | **Primary Target:** Unplanned acute heart failure readmission or death within $[1, 30]$ days post-discharge. |
+| `age` | `person` | OMOP Demographics | Integer | $18 - 95$ years | Inpatient admission age calculated from `year_of_birth` relative to index `visit_start_date`. |
+| `gender_concept_id` | `person` | SNOMED / OMOP Standard | Categorical | $\{8507, 8532\}$ | Biological sex (8507: Male, 8532: Female) mapped from baseline demographic registry. |
+| `length_of_stay` | `visit_occurrence` | OMOP Visit Dimension | Integer | $1 - 45$ days | Total index encounter duration calculated as `DATE_DIFF(visit_end_date, visit_start_date, DAY)`. |
+| `ejection_fraction` | `measurement` | LOINC `88062-5` / SNOMED | Continuous | $10.0\% - 70.0\%$ | Left Ventricular Ejection Fraction (LVEF); most proximate measurement recorded prior to discharge. |
+| `serum_creatinine` | `measurement` | LOINC `2160-0` | Continuous | $0.4 - 8.0$ mg/dL | Peak serum creatinine recorded during index encounter; surrogate marker of cardiorenal syndrome. |
+| `systolic_bp` | `measurement` | LOINC `8480-6` | Continuous | $70 - 210$ mmHg | Minimum recorded systolic blood pressure prior to discharge; markers below 90 mmHg reflect hypoperfusion. |
+| `prior_comorbidity_count` | `condition_occurrence` | Standard SNOMED Ancestors | Integer | $0 - 65$ | Distinct ancestral chronic condition concepts documented $\ge 1$ day prior to index admission. |
+| `diabetes_mellitus` | `condition_occurrence` | SNOMED `201820` / Ancestors | Binary (0/1) | $\{0, 1\}$ | History of Type 2 Diabetes Mellitus confirmed via ancestor concept set prior to index visit. |
+
 ---
 
 ## Methodological Contributions & Empirical Findings
