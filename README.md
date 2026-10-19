@@ -120,7 +120,7 @@ The predictive engine was evaluated on the untouched out-of-sample holdout audit
 | **Minority F1-Score (Class 1.0)** | 0.5612 | **0.6741** | Harmonic balance on 30-day cardiac deterioration events. |
 | **Overall Cohort Accuracy** | 81.30% | **88.67%** | High general stratification accuracy across all inpatient encounters. |
 
-#### Holdout Test Confusion Matrix Breakdown ($N = 10,014$ Encounters)[cite: 15]
+#### Holdout Test Confusion Matrix Breakdown ($N = 10,014$ Encounters)
 * **True Positives (TP = 1,174):** High-risk patients correctly identified for post-discharge transitional care and GDMT optimization.
 * **False Positives (FP = 630):** Low-risk patients conservatively flagged, incurring non-detrimental outpatient follow-up calls.
 * **False Negatives (FN = 505):** Deteriorating patients missed by the decision cutoff, representing unmitigated readmission exposure.
@@ -142,7 +142,7 @@ Bedside Patient Risk Attribution Decomposition (Predicted Prob: 0.019 | Base Log
 ├── Length of Stay = 0 days      ──> [-0.07 SHAP Impact] (Brief Inpatient Exposure)
 └── Diabetes = 1                 ──> [+0.05 SHAP Impact] (Metabolic Comorbidity Factor)
 ```
-#### Global Feature Attribution Rankings (TreeSHAP Beeswarm Analysis)[cite: 16]
+#### Global Feature Attribution Rankings (TreeSHAP Beeswarm Analysis)
 * **`serum_creatinine` (Rank 1):** Markedly high values (red points) exert strong positive SHAP impacts, identifying cardiorenal syndrome and impaired filtration as the primary driver of readmission risk.
 * **`ejection_fraction` (Rank 2):** Severely depressed LVEF values (<35%, blue points) drive log-odds positively toward acute decompensation, whereas preserved LVEF functions as a protective negative driver.
 * **`prior_comorbidity_count` (Rank 3):** High multi-morbidity burden incrementally elevates patient frailty and post-discharge vulnerability.
@@ -179,7 +179,7 @@ flowchart TD
     style H fill:#fff4e6,stroke:#d9480f,stroke-width:1.5px
 ```
 
-#### Empirical Bedside Safety Audit (Acute Cardiorenal Encounter)[cite: 23]
+#### Empirical Bedside Safety Audit (Acute Cardiorenal Encounter)
 * **Clinical Presentation:** 73-year-old male presenting with acute dyspnea, NYHA Class IV symptoms, LVEF 24%, serum creatinine 2.4 mg/dL, and systolic blood pressure 88 mmHg.
 * **Agent 1 (Extraction):** Extracted structured vital parameters adhering strictly to the `PatientVitals` schema (`age: 73`, `lvef: 24.0%`, `creatinine: 2.4 mg/dL`, `sbp: 88 mmHg`).
 * **Agent 2 (ML Stratification):** Model produced a calibrated probability of **0.9585** (Critical Risk Tier; exceeds $\tau^* = 0.7269$). Top signed TreeSHAP drivers: `systolic_bp` (+1.4976), `serum_creatinine` (+1.3507), and `prior_comorbidity_count` (+1.2371).
