@@ -329,8 +329,7 @@ In alignment with best practices for ethical AI in scientific computing and biom
 ## Citation & Attribution
 
 If you utilize the Project ACAT architecture or build upon these findings, please cite the software repository:
-
-```bibtex
+```
 @misc{hussain2026acat,
   author       = {Hussain, N M Emran},
   title        = {Project ACAT: Leakage-Free Cohort Partitioning, Cost-Sensitive 
@@ -357,3 +356,4 @@ If you utilize the Project ACAT architecture or build upon these findings, pleas
   year         = {2022},
   publisher    = {Am Heart Assoc}
 }
+```
