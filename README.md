@@ -271,6 +271,7 @@ cd Project-ACAT
 # Install dependencies in a clean virtual environment
 pip install -r requirements.txt
 ```
+---
 ### 2. Sequential Pipeline Execution Protocol
 
 The pipeline can be audited or reproduced either through the modular `src/` modules or sequentially within `notebooks/01_ACAT_Acute_Care_Agentic_Triage.ipynb`:
