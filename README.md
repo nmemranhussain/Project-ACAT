@@ -9,16 +9,16 @@
 ## Abstract
 Unplanned 30-day readmissions and post-discharge mortality following acute heart failure (HF) exacerbations represent severe clinical complications and drive substantial institutional financial penalties under the Centers for Medicare & Medicaid Services (CMS) Hospital Readmissions Reduction Program (HRRP). In contemporary hospital settings, predictive Clinical Decision Support Systems (CDSS) frequently fail translational deployment due to four systemic vulnerabilities:
 1. **Patient Identity Leakage:** Longitudinal data corruption caused by randomly partitioning multi-encounter patients across train and test splits.
-2. **Probability Distortion under Class Imbalance:** Miscalibrated risk estimates arising from the low real-world prevalence of acute cardiovascular readmission events (~16–18%)[cite: 9, 15].
-3. **Suboptimal Arbitrary Decision Boundaries:** Reliance on default classification thresholds ($\tau = 0.50$) that ignore asymmetric clinical costs (where missing a deteriorating patient carries far higher penalty than issuing a routine care-management call)[cite: 1, 15].
+2. **Probability Distortion under Class Imbalance:** Miscalibrated risk estimates arising from the low real-world prevalence of acute cardiovascular readmission events (~16–18%).
+3. **Suboptimal Arbitrary Decision Boundaries:** Reliance on default classification thresholds ($\tau = 0.50$) that ignore asymmetric clinical costs (where missing a deteriorating patient carries far higher penalty than issuing a routine care-management call).
 4. **Ungrounded Generative Hallucinations:** Downstream Large Language Model (LLM) clinical summaries recommending pharmacotherapies that directly violate hemodynamic contraindications (e.g., initiating vasodilators during acute cardiogenic hypotension).
 
 **Project ACAT (Acute Care Agentic Triage)** re-engineers this predictive and triage pathway into an end-to-end, reproducible, research-grade clinical data science system. Evaluated on an untouched holdout audit cohort of 10,014 clinical encounters, Project ACAT demonstrates:
-- **Zero Patient Leakage:** Patient-level isolation via 5-fold `StratifiedGroupKFold` on 50,000 encounters extracted from the CMS Synthetic Public Schema in OMOP CDM v5.3 format, strictly segregating 38,516 training patients from 9,628 audit test patients[cite: 7, 15].
-- **Cost-Sensitive Minority Calibration:** Training a gradient-boosted LightGBM ensemble under dynamically weighted class penalties (`scale_pos_weight = 4.7221`), achieving an out-of-sample **ROC-AUC of 0.9245** and **PR-AUC of 0.7327**[cite: 15].
-- **Utility-Optimal Operating Cutoff:** Derivation of a cost-weighted decision boundary ($\tau^* = 0.7269$) via empirical Precision-Recall curve optimization, securing an out-of-sample minority **F1-Score of 0.6741** (Precision: 65.08%, Recall: 69.92%)[cite: 15].
-- **Observation-Level TreeSHAP Explainability:** Native extraction of local Shapley attributions without heuristic probability overrides, mathematically isolating cardiorenal impairment (`serum_creatinine`, `ejection_fraction`, `systolic_bp`) as primary log-odds drivers[cite: 16, 17].
-- **Grounded Multi-Agent Decision Support:** A 4-agent consensus orchestration pipeline powered by Gemini 2.5 Flash and Pydantic schemas, integrating dense vector retrieval (ChromaDB + `text-embedding-004`) over the *2022 AHA/ACC/HFSA Heart Failure Guidelines* to deterministically audit bedside contraindications[cite: 1, 20, 22].
+- **Zero Patient Leakage:** Patient-level isolation via 5-fold `StratifiedGroupKFold` on 50,000 encounters extracted from the CMS Synthetic Public Schema in OMOP CDM v5.3 format, strictly segregating 38,516 training patients from 9,628 audit test patients.
+- **Cost-Sensitive Minority Calibration:** Training a gradient-boosted LightGBM ensemble under dynamically weighted class penalties (`scale_pos_weight = 4.7221`), achieving an out-of-sample **ROC-AUC of 0.9245** and **PR-AUC of 0.7327**.
+- **Utility-Optimal Operating Cutoff:** Derivation of a cost-weighted decision boundary ($\tau^* = 0.7269$) via empirical Precision-Recall curve optimization, securing an out-of-sample minority **F1-Score of 0.6741** (Precision: 65.08%, Recall: 69.92%).
+- **Observation-Level TreeSHAP Explainability:** Native extraction of local Shapley attributions without heuristic probability overrides, mathematically isolating cardiorenal impairment (`serum_creatinine`, `ejection_fraction`, `systolic_bp`) as primary log-odds drivers.
+- **Grounded Multi-Agent Decision Support:** A 4-agent consensus orchestration pipeline powered by Gemini 2.5 Flash and Pydantic schemas, integrating dense vector retrieval (ChromaDB + `text-embedding-004`) over the *2022 AHA/ACC/HFSA Heart Failure Guidelines* to deterministically audit bedside contraindications.
 - **Translational Financial Impact & MLOps Governance:** CMS HRRP penalty modeling establishing **+$29,144,776.00** in preserved hospital clinical value, paired with background Population Stability Index (PSI) drift monitoring triggering automated retraining alerts under demographic shifts.
 
 ---
@@ -28,10 +28,10 @@ Unplanned 30-day readmissions and post-discharge mortality following acute heart
 Project ACAT is organized around five foundational research questions addressing clinical predictive validity, algorithmic explainability, and multi-agent safety:
 
 - **RQ1 (Leakage-Free OMOP CDM Cohort Engineering):** Can longitudinal group-stratified partitioning (`StratifiedGroupKFold`) eliminate patient identity leakage across repeat acute heart failure encounters within standardized OMOP CDM schemas without sacrificing minority class prevalence distributions?
-- **RQ2 (Cost-Utility Threshold Optimization Under Class Imbalance):** How does shifting from an arbitrary cutoff ($\tau = 0.50$) to an empirical Precision-Recall optimized operating point ($\tau^* = 0.7269$) under asymmetric class weighting balance emergency triage recall against clinician alarm fatigue[cite: 15]?
-- **RQ3 (Pathophysiological Fidelity of TreeSHAP Attributions):** Do native observation-level TreeSHAP attributions accurately reflect established cardiorenal syndrome mechanics (e.g., non-linear interactions between LVEF, serum creatinine, and systolic blood pressure) without manual heuristic interventions[cite: 16, 17]?
-- **RQ4 (Guideline-Grounded Agentic Safety Auditing):** Can a structured multi-agent architecture coupled with dense vector retrieval over clinical practice guidelines deterministically identify and flag life-threatening drug contraindications (such as ARNi-induced hypotension and MRA-induced hyperkalemia) in real time[cite: 20, 22]?
-- **RQ5 (Translational Healthcare Economics & Production Drift Governance):** How do CMS HRRP penalty structures map to empirical confusion matrices to quantify institutional ROI, and can Population Stability Index (PSI) monitoring establish automated quality-control triggers under seasonal demographic drift[cite: 25, 26]?
+- **RQ2 (Cost-Utility Threshold Optimization Under Class Imbalance):** How does shifting from an arbitrary cutoff ($\tau = 0.50$) to an empirical Precision-Recall optimized operating point ($\tau^* = 0.7269$) under asymmetric class weighting balance emergency triage recall against clinician alarm fatigue?
+- **RQ3 (Pathophysiological Fidelity of TreeSHAP Attributions):** Do native observation-level TreeSHAP attributions accurately reflect established cardiorenal syndrome mechanics (e.g., non-linear interactions between LVEF, serum creatinine, and systolic blood pressure) without manual heuristic interventions?
+- **RQ4 (Guideline-Grounded Agentic Safety Auditing):** Can a structured multi-agent architecture coupled with dense vector retrieval over clinical practice guidelines deterministically identify and flag life-threatening drug contraindications (such as ARNi-induced hypotension and MRA-induced hyperkalemia) in real time?
+- **RQ5 (Translational Healthcare Economics & Production Drift Governance):** How do CMS HRRP penalty structures map to empirical confusion matrices to quantify institutional ROI, and can Population Stability Index (PSI) monitoring establish automated quality-control triggers under seasonal demographic drift?
 
 ---
 
@@ -80,8 +80,8 @@ To establish true out-of-sample generalizability, Project ACAT enforces strict p
 
 | Cohort Partition | Total Encounters | Unique Patients | Repeat Encounter Rate | Acute Readmissions (`target_outcome_30d = 1`) | Minority Event Prevalence | Cross-Partition Patient Leakage |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Training Cohort** | 39,986[cite: 15] | 38,516 | 3.68% | 6,988 events[cite: 15] | 17.48%[cite: 15] | **0 Patients (Strict Isolation)** |
-| **Audit Test Cohort** | 10,014[cite: 15] | 9,628 | 3.85% | 1,679 events[cite: 15] | 16.77%[cite: 15] | **0 Patients (Strict Isolation)** |
+| **Training Cohort** | 39,986 | 38,516 | 3.68% | 6,988 events | 17.48% | **0 Patients (Strict Isolation)** |
+| **Audit Test Cohort** | 10,014 | 9,628 | 3.85% | 1,679 events | 16.77% | **0 Patients (Strict Isolation)** |
 | **Total Cohort** | **50,000** | **48,144** | **3.71%** | **8,667 events** | **17.33%** | **0.00% Patient Leakage** |
 
 ---
@@ -90,31 +90,31 @@ To establish true out-of-sample generalizability, Project ACAT enforces strict p
 
 ### 1. Cost-Sensitive Predictive Modeling & Decision Threshold Optimization
 
-Clinical datasets exhibiting low acute event prevalence cause standard loss functions to collapse toward the majority class, producing excessive false negatives that prove catastrophic in acute cardiovascular care. Project ACAT configures a gradient-boosted LightGBM ensemble trained under dynamic minority class weighting (`scale_pos_weight = 4.7221`), neutralizing prevalence imbalance directly during gradient tree construction[cite: 15].
+Clinical datasets exhibiting low acute event prevalence cause standard loss functions to collapse toward the majority class, producing excessive false negatives that prove catastrophic in acute cardiovascular care. Project ACAT configures a gradient-boosted LightGBM ensemble trained under dynamic minority class weighting (`scale_pos_weight = 4.7221`), neutralizing prevalence imbalance directly during gradient tree construction.
 
-The predictive engine was evaluated on the untouched out-of-sample holdout audit cohort of 10,014 encounters (1,679 confirmed 30-day cardiac readmission events; 16.77% prevalence)[cite: 15]. Rather than defaulting to an uncalibrated classification threshold ($\tau = 0.50$), an asymmetric utility-optimal operating threshold ($\tau^* = 0.7269$) was derived via empirical Precision-Recall curve harmonic optimization[cite: 15]:
+The predictive engine was evaluated on the untouched out-of-sample holdout audit cohort of 10,014 encounters (1,679 confirmed 30-day cardiac readmission events; 16.77% prevalence). Rather than defaulting to an uncalibrated classification threshold ($\tau = 0.50$), an asymmetric utility-optimal operating threshold ($\tau^* = 0.7269$) was derived via empirical Precision-Recall curve harmonic optimization:
 
-| Evaluation Metric | Baseline / Arbitrary ($\tau = 0.50$) | Calibrated ACAT Engine ($\tau^* = 0.7269$)[cite: 15] | Clinical Significance & Utility |
+| Evaluation Metric | Baseline / Arbitrary ($\tau = 0.50$) | Calibrated ACAT Engine ($\tau^* = 0.7269$) | Clinical Significance & Utility |
 | :--- | :---: | :---: | :--- |
-| **ROC-AUC** | 0.9245[cite: 15] | **0.9245**[cite: 15] | High global discriminative capacity across unseen patient trajectories[cite: 15]. |
-| **PR-AUC (Average Precision)** | 0.7327[cite: 15] | **0.7327**[cite: 15] | High precision-recall area under clinical class imbalance[cite: 15]. |
-| **Operating Threshold ($\tau^*$)** | 0.5000 (Arbitrary) | **0.7269 (Utility-Optimal)**[cite: 15] | Threshold tuned to balance alert precision against bedside miss rate[cite: 15]. |
-| **Minority Precision (Class 1.0)** | 42.10% | **65.08%**[cite: 15] | Protects clinical staff and care coordinators from alarm fatigue[cite: 15]. |
-| **Minority Recall (Class 1.0)** | 84.20% | **69.92%**[cite: 15] | Correctly flags 7 out of 10 deteriorating patients prior to discharge[cite: 15]. |
-| **Minority F1-Score (Class 1.0)** | 0.5612 | **0.6741**[cite: 15] | Harmonic balance on 30-day cardiac deterioration events[cite: 15]. |
-| **Overall Cohort Accuracy** | 81.30% | **88.67%**[cite: 15] | High general stratification accuracy across all inpatient encounters[cite: 15]. |
+| **ROC-AUC** | 0.9245 | **0.9245** | High global discriminative capacity across unseen patient trajectories. |
+| **PR-AUC (Average Precision)** | 0.7327 | **0.7327** | High precision-recall area under clinical class imbalance. |
+| **Operating Threshold ($\tau^*$)** | 0.5000 (Arbitrary) | **0.7269 (Utility-Optimal)** | Threshold tuned to balance alert precision against bedside miss rate. |
+| **Minority Precision (Class 1.0)** | 42.10% | **65.08%** | Protects clinical staff and care coordinators from alarm fatigue. |
+| **Minority Recall (Class 1.0)** | 84.20% | **69.92%** | Correctly flags 7 out of 10 deteriorating patients prior to discharge. |
+| **Minority F1-Score (Class 1.0)** | 0.5612 | **0.6741** | Harmonic balance on 30-day cardiac deterioration events. |
+| **Overall Cohort Accuracy** | 81.30% | **88.67%** | High general stratification accuracy across all inpatient encounters. |
 
 #### Holdout Test Confusion Matrix Breakdown ($N = 10,014$ Encounters)[cite: 15]
-* **True Positives (TP = 1,174):** High-risk patients correctly identified for post-discharge transitional care and GDMT optimization[cite: 15].
-* **False Positives (FP = 630):** Low-risk patients conservatively flagged, incurring non-detrimental outpatient follow-up calls[cite: 15].
-* **False Negatives (FN = 505):** Deteriorating patients missed by the decision cutoff, representing unmitigated readmission exposure[cite: 15].
-* **True Negatives (TN = 7,705):** Hemodynamically stable patients discharged under standard protocols without unnecessary resource utilization[cite: 15].
+* **True Positives (TP = 1,174):** High-risk patients correctly identified for post-discharge transitional care and GDMT optimization.
+* **False Positives (FP = 630):** Low-risk patients conservatively flagged, incurring non-detrimental outpatient follow-up calls.
+* **False Negatives (FN = 505):** Deteriorating patients missed by the decision cutoff, representing unmitigated readmission exposure.
+* **True Negatives (TN = 7,705):** Hemodynamically stable patients discharged under standard protocols without unnecessary resource utilization.
 
 ---
 
 ### 2. Observation-Level TreeSHAP Explainability
 
-To prevent ungrounded or speculative explanations, Project ACAT integrates observation-level TreeSHAP attributions directly into inference pipelines without manual heuristic overrides[cite: 16, 17]. Global feature importance patterns and local patient log-odds decompositions are computed deterministically from the trained tree ensemble[cite: 16, 17].
+To prevent ungrounded or speculative explanations, Project ACAT integrates observation-level TreeSHAP attributions directly into inference pipelines without manual heuristic overrides. Global feature importance patterns and local patient log-odds decompositions are computed deterministically from the trained tree ensemble.
 
 ```text
 Bedside Patient Risk Attribution Decomposition (Predicted Prob: 0.019 | Base Log-Odds: -3.944)
@@ -127,17 +127,17 @@ Bedside Patient Risk Attribution Decomposition (Predicted Prob: 0.019 | Base Log
 └── Diabetes = 1                 ──> [+0.05 SHAP Impact] (Metabolic Comorbidity Factor)
 ```
 #### Global Feature Attribution Rankings (TreeSHAP Beeswarm Analysis)[cite: 16]
-* **`serum_creatinine` (Rank 1):** Markedly high values (red points) exert strong positive SHAP impacts, identifying cardiorenal syndrome and impaired filtration as the primary driver of readmission risk[cite: 16].
-* **`ejection_fraction` (Rank 2):** Severely depressed LVEF values (<35%, blue points) drive log-odds positively toward acute decompensation, whereas preserved LVEF functions as a protective negative driver[cite: 16].
-* **`prior_comorbidity_count` (Rank 3):** High multi-morbidity burden incrementally elevates patient frailty and post-discharge vulnerability[cite: 16].
-* **`systolic_bp` (Rank 4):** Profound hypotension (<90 mmHg, blue points) drives positive risk attribution, reflecting cardiogenic shock or systemic hypoperfusion[cite: 16].
-* **`age` & Utilization Metrics (Ranks 5–8):** Length of stay, biological sex, and diabetes status provide secondary predictive stratification[cite: 16].
+* **`serum_creatinine` (Rank 1):** Markedly high values (red points) exert strong positive SHAP impacts, identifying cardiorenal syndrome and impaired filtration as the primary driver of readmission risk.
+* **`ejection_fraction` (Rank 2):** Severely depressed LVEF values (<35%, blue points) drive log-odds positively toward acute decompensation, whereas preserved LVEF functions as a protective negative driver.
+* **`prior_comorbidity_count` (Rank 3):** High multi-morbidity burden incrementally elevates patient frailty and post-discharge vulnerability.
+* **`systolic_bp` (Rank 4):** Profound hypotension (<90 mmHg, blue points) drives positive risk attribution, reflecting cardiogenic shock or systemic hypoperfusion.
+* **`age` & Utilization Metrics (Ranks 5–8):** Length of stay, biological sex, and diabetes status provide secondary predictive stratification.
 
 ---
 
 ### 3. Guideline-Grounded Multi-Agent Consensus & Bedside Safety Audit
 
-To prevent generative clinical hallucinations and ensure patient safety, Project ACAT coordinates a 4-agent consensus engine driven by Gemini 2.5 Flash and typed Pydantic contracts[cite: 22]. The architecture integrates dense vector retrieval over the *2022 AHA/ACC/HFSA Heart Failure Guidelines* indexed in ChromaDB using Google's `text-embedding-004`[cite: 20, 22]:
+To prevent generative clinical hallucinations and ensure patient safety, Project ACAT coordinates a 4-agent consensus engine driven by Gemini 2.5 Flash and typed Pydantic contracts. The architecture integrates dense vector retrieval over the *2022 AHA/ACC/HFSA Heart Failure Guidelines* indexed in ChromaDB using Google's `text-embedding-004`:
 
 ```mermaid
 flowchart TD
@@ -164,14 +164,14 @@ flowchart TD
 ```
 
 #### Empirical Bedside Safety Audit (Acute Cardiorenal Encounter)[cite: 23]
-* **Clinical Presentation:** 73-year-old male presenting with acute dyspnea, NYHA Class IV symptoms, LVEF 24%, serum creatinine 2.4 mg/dL, and systolic blood pressure 88 mmHg[cite: 23].
-* **Agent 1 (Extraction):** Extracted structured vital parameters adhering strictly to the `PatientVitals` schema (`age: 73`, `lvef: 24.0%`, `creatinine: 2.4 mg/dL`, `sbp: 88 mmHg`)[cite: 23].
-* **Agent 2 (ML Stratification):** Model produced a calibrated probability of **0.9585** (Critical Risk Tier; exceeds $\tau^* = 0.7269$)[cite: 15, 23]. Top signed TreeSHAP drivers: `systolic_bp` (+1.4976), `serum_creatinine` (+1.3507), and `prior_comorbidity_count` (+1.2371)[cite: 23].
-* **Agent 3 (Dense RAG Retrieval):** Successfully retrieved 2022 AHA/ACC/HFSA guidelines regarding Acute Decompensation Triage, MRA renal safety criteria, and SGLT2i recommendations[cite: 20, 23].
-* **Agent 4 (Bedside Contraindication Audit):** Reconciled the clinical picture into an actionable brief that intercepted two high-risk clinical errors[cite: 23]:
-  * **Hypotension Safety Flag:** Explicitly warned that an SBP of 88 mmHg contraindicates initiation of ARNi (Sacubitril/Valsartan) and acute vasodilators[cite: 20, 23].
-  * **Renal Hyperkalemia Warning:** Flagged that serum creatinine of 2.4 mg/dL requires confirming eGFR > 30 mL/min/1.73m² and potassium < 5.0 mEq/L before administering MRAs (Spironolactone) to prevent lethal hyperkalemia[cite: 20, 23].
-  * **Guideline-Directed Management:** Recommended prioritizing hemodynamic stabilization and IV loop diuretics, with SGLT2 inhibitor initiation once euvolemia is restored[cite: 20, 23].
+* **Clinical Presentation:** 73-year-old male presenting with acute dyspnea, NYHA Class IV symptoms, LVEF 24%, serum creatinine 2.4 mg/dL, and systolic blood pressure 88 mmHg.
+* **Agent 1 (Extraction):** Extracted structured vital parameters adhering strictly to the `PatientVitals` schema (`age: 73`, `lvef: 24.0%`, `creatinine: 2.4 mg/dL`, `sbp: 88 mmHg`).
+* **Agent 2 (ML Stratification):** Model produced a calibrated probability of **0.9585** (Critical Risk Tier; exceeds $\tau^* = 0.7269$). Top signed TreeSHAP drivers: `systolic_bp` (+1.4976), `serum_creatinine` (+1.3507), and `prior_comorbidity_count` (+1.2371).
+* **Agent 3 (Dense RAG Retrieval):** Successfully retrieved 2022 AHA/ACC/HFSA guidelines regarding Acute Decompensation Triage, MRA renal safety criteria, and SGLT2i recommendations.
+* **Agent 4 (Bedside Contraindication Audit):** Reconciled the clinical picture into an actionable brief that intercepted two high-risk clinical errors:
+  * **Hypotension Safety Flag:** Explicitly warned that an SBP of 88 mmHg contraindicates initiation of ARNi (Sacubitril/Valsartan) and acute vasodilators.
+  * **Renal Hyperkalemia Warning:** Flagged that serum creatinine of 2.4 mg/dL requires confirming eGFR > 30 mL/min/1.73m² and potassium < 5.0 mEq/L before administering MRAs (Spironolactone) to prevent lethal hyperkalemia.
+  * **Guideline-Directed Management:** Recommended prioritizing hemodynamic stabilization and IV loop diuretics, with SGLT2 inhibitor initiation once euvolemia is restored.
 
 ---
 
@@ -278,14 +278,14 @@ The pipeline can be audited or reproduced either through the modular `src/` modu
 
 #### Phase 1 & 2: OMOP CDM Extraction & Leakage-Free Cohort Partitioning
 - Authenticates with Google Cloud BigQuery (`bigquery-public-data.cms_synthetic_patient_data_omop`).
-- Queries primary inpatient heart failure encounters, applies strict 30-day acute readmission lookaheads, and extracts lookback comorbidities without retrospective target contamination[cite: 7].
-- Executes 5-fold `StratifiedGroupKFold` grouped strictly by `person_id`, saving `train.parquet` (39,986 encounters) and `test.parquet` (10,014 encounters) with guaranteed 0% patient leakage[cite: 7, 15].
+- Queries primary inpatient heart failure encounters, applies strict 30-day acute readmission lookaheads, and extracts lookback comorbidities without retrospective target contamination.
+- Executes 5-fold `StratifiedGroupKFold` grouped strictly by `person_id`, saving `train.parquet` (39,986 encounters) and `test.parquet` (10,014 encounters) with guaranteed 0% patient leakage.
 
 #### Phase 3: Cost-Sensitive LightGBM Training & Native TreeSHAP Explainability
-- Computes dynamic class weighting (`scale_pos_weight = 4.7221`) and trains the LightGBM classifier[cite: 15].
-- Derives the utility-optimal operating threshold ($\tau^* = 0.7269$) via Precision-Recall curve optimization[cite: 15].
-- Evaluates holdout test performance ($\text{ROC-AUC} = 0.9245$, $\text{PR-AUC} = 0.7327$, $F_1 = 0.6741$)[cite: 15].
-- Calculates observation-level TreeSHAP attributions and serializes `src/model.joblib`, `src/model_metadata.json`, and visual SHAP plots[cite: 14, 16, 17].
+- Computes dynamic class weighting (`scale_pos_weight = 4.7221`) and trains the LightGBM classifier.
+- Derives the utility-optimal operating threshold ($\tau^* = 0.7269$) via Precision-Recall curve optimization.
+- Evaluates holdout test performance ($\text{ROC-AUC} = 0.9245$, $\text{PR-AUC} = 0.7327$, $F_1 = 0.6741$).
+- Calculates observation-level TreeSHAP attributions and serializes `src/model.joblib`, `src/model_metadata.json`, and visual SHAP plots.
 
 #### Phase 4: Clinical Guidelines Vector Store & Dense RAG Engine
 - Ingests evidence-based recommendations from `guidelines/aha_hf_guidelines_2022.json`.
@@ -315,7 +315,7 @@ The pipeline can be audited or reproduced either through the modular `src/` modu
 
 In alignment with best practices for ethical AI in scientific computing and biomedical research:
 
-- **Predictive Determinism:** All risk stratification probabilities, decision threshold cutoffs, and feature attribution impacts are calculated deterministically using Scikit-Learn, LightGBM, and TreeSHAP[cite: 15, 17]. Generative AI models are strictly prohibited from generating raw numerical risk scores[cite: 17].
+- **Predictive Determinism:** All risk stratification probabilities, decision threshold cutoffs, and feature attribution impacts are calculated deterministically using Scikit-Learn, LightGBM, and TreeSHAP. Generative AI models are strictly prohibited from generating raw numerical risk scores.
 - **Constrained Agentic Reasoning:** Gemini 2.5 Flash is utilized solely for unstructured clinical note parsing (constrained via typed Pydantic schemas) and bedside clinical audit reconciliation.
 - **Development Assistance:** Generative AI tools were utilized for code refactoring, test scaffolding, and Markdown documentation formatting.
 - **Intellectual Ownership:** All experimental designs, leakage-free cohort definitions, SQL queries, cost-utility threshold formulations, TreeSHAP explainability workflows, and economic models were conceptualized, directed, and verified by the author.
