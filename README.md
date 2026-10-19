@@ -347,3 +347,14 @@ If you utilize the Project ACAT architecture or build upon these findings, pleas
   journal = {GitHub repository},
   howpublished = {https://github.com/nmemranhussain/Project-ACAT}
 }
+
+@article{heidenreich2022aha,
+  author = {Heidenreich, Paul A. and Bozkurt, Biykem and Aguilar, David and Allen, Larry A. and Byun, Joni J. and Colvin, Monica M. and Deswal, Anita and Drazner, Mark H. and Dunlay, Shannon M. and Evers, Linda R. and others},
+  title = {2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines},
+  journal = {Circulation},
+  volume = {145},
+  number = {18},
+  pages = {e895--e1032},
+  year = {2022},
+  publisher = {Am Heart Assoc}
+}
