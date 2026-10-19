@@ -266,13 +266,13 @@ Clone the repository and install the validated clinical machine learning and mul
 
 ```bash
 # Clone the repository
-git clone [https://github.com/nmemranhussain/Project-ACAT.git](https://github.com/nmemranhussain/Project-ACAT.git)
+git clone https://github.com/nmemranhussain/Project-ACAT.git
 cd Project-ACAT
 
 # Install dependencies in a clean virtual environment
 pip install -r requirements.txt
 ```
----
+
 ### 2. Sequential Pipeline Execution Protocol
 The pipeline can be audited or reproduced either through the modular src/ modules or sequentially within notebooks/01_ACAT_Acute_Care_Agentic_Triage.ipynb:
 
@@ -363,3 +363,4 @@ If you utilize the Project ACAT architecture or build upon these findings, pleas
   doi          = {10.1161/CIR.0000000000001063}
 }
 ```
+---
