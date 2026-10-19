@@ -299,3 +299,51 @@ The pipeline can be audited or reproduced either through the modular `src/` modu
 #### Phase 6: Healthcare Economic Modeling & Production Drift Auditing
 - Computes institutional financial impact under CMS HRRP readmission penalty benchmarks, saving `financial_roi_summary.json`.
 - Simulates seasonal cardiorenal demographic drift and calculates the Population Stability Index (PSI) across key clinical biomarkers, saving `psi_drift_report.json`.
+
+---
+## Technical & Clinical Limitations
+
+- **Synthetic Cohort Baseline:** The empirical training cohort is derived from the CMS Synthetic Public Schema in OMOP CDM v5.3. While this schema provides realistic multi-table relational structures, prospective institutional validation on real-world clinical databases (e.g., MIMIC-IV, eICU-CRD, or health-system EHRs) is essential prior to live clinical deployment.
+- **Unmeasured Social Determinants of Health (SDOH):** Administrative claims and electronic health records do not fully capture post-discharge socio-environmental factors (medication access, living conditions, transportation, diet, and health literacy) that strongly influence 30-day heart failure readmissions.
+- **Continuous Inpatient Trajectory Modeling:** The predictive engine aggregates clinical vitals and laboratory biomarkers at the encounter level. It does not model continuous high-frequency intensive care telemetry or intra-admission physiological fluctuations.
+- **Decision Support Scope:** Project ACAT is designed strictly as an assistive clinical decision support system. It is not an autonomous diagnostic agent. All therapeutic interventions, drug titrations, and hospital discharge orders remain the clinical responsibility of licensed healthcare providers.
+
+---
+
+## AI Disclosure & Academic Integrity
+
+In alignment with best practices for ethical AI in scientific computing and biomedical research:
+
+- **Predictive Determinism:** All risk stratification probabilities, decision threshold cutoffs, and feature attribution impacts are calculated deterministically using Scikit-Learn, LightGBM, and TreeSHAP[cite: 15, 17]. Generative AI models are strictly prohibited from generating raw numerical risk scores[cite: 17].
+- **Constrained Agentic Reasoning:** Gemini 2.5 Flash is utilized solely for unstructured clinical note parsing (constrained via typed Pydantic schemas) and bedside clinical audit reconciliation.
+- **Development Assistance:** Generative AI tools were utilized for code refactoring, test scaffolding, and Markdown documentation formatting.
+- **Intellectual Ownership:** All experimental designs, leakage-free cohort definitions, SQL queries, cost-utility threshold formulations, TreeSHAP explainability workflows, and economic models were conceptualized, directed, and verified by the author.
+
+---
+
+## Future Research Directions
+
+1. **Subgroup-Specific Fairness & Demographic Thresholding ($\tau_{\text{age}}^*$):**
+   - Formulate a constrained multiobjective optimization framework (e.g., Pareto-frontier optimization) to derive age-stratified decision cutoffs, mitigating False Negative Rate disparities between younger and geriatric cohorts without exceeding hospital care-management capacities.
+2. **Longitudinal State-Space Modeling on EHR Trajectories:**
+   - Transition from static encounter aggregations to continuous-time structured state-space models (e.g., Mamba / S4) to model irregular temporal trajectories of inpatient vital signs, fluid balance, and biomarker volatility across sequential admissions.
+3. **Formal Verification of Agentic Clinical Synthesis:**
+   - Extend the Clinical Auditor beyond semantic vector retrieval to formal constraint-satisfaction solvers (e.g., SMT / Z3 solvers) to mathematically guarantee that LLM-generated clinical directives strictly satisfy all clinical practice guideline constraints.
+4. **Real-Time FHIR Interoperability & CDS Hooks:**
+   - Implement an asynchronous HL7 FHIR (Fast Healthcare Interoperability Resources) subscription endpoint capable of receiving real-time `Encounter/discharged` notifications, triggering automated background triage assessments, and returning calibrated risk scores via standard CDS Hooks.
+  
+---
+
+## Citation & Attribution
+
+If you utilize the Project ACAT architecture or build upon these findings, please cite the software repository:
+
+```bibtex
+@misc{hussain2026acat,
+  author = {Hussain, N M Emran},
+  title = {Project ACAT: Leakage-Free Cohort Partitioning, Cost-Sensitive TreeSHAP Modeling, and Guideline-Grounded Multi-Agent Decision Support for 30-Day Heart Failure Readmission Risk},
+  year = {2026},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {https://github.com/nmemranhussain/Project-ACAT}
+}
