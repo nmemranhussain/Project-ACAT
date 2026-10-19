@@ -214,3 +214,88 @@ where $B$ denotes the number of empirical quantile bins ($B = 10$), and $P_b$ re
 | **`serum_creatinine`** | **0.9390** | 🚨 **RED ALERT (Severe Drift)** | Cardiorenal syndrome cluster flagged; recalibration required. |
 | **`systolic_bp`** | **0.0010** | 🟢 **GREEN (Stable)** | Hemodynamic blood pressure distribution within acceptable variance. |
 | **`prior_comorbidity_count`**| **0.0010** | 🟢 **GREEN (Stable)** | Baseline chronic disease diagnostic prevalence stable. |
+
+## Repository Structure & Reproducibility Guide
+
+The Project ACAT repository is organized into modular source libraries, serialized clinical artifacts, and a reproducible end-to-end execution notebook designed for auditability:
+
+```text
+Project-ACAT/
+├── .gitignore                               # Environment, cache, and large artifact exclusions
+├── LICENSE                                  # MIT Open-Source Academic License
+├── README.md                                # Comprehensive clinical system specification & empirical audit
+├── requirements.txt                         # Pinned dependencies for reproducible deployment
+│
+├── data/
+│   ├── raw/                                 # Initial clinical extract directory (immutable)
+│   ├── processed/                           # Sanitized cohorts, visual explainability, and governance audits
+│   │   ├── train.parquet                    # 39,986 leak-free group-stratified training encounters
+│   │   ├── test.parquet                     # 10,014 untouched holdout audit encounters
+│   │   ├── shap_summary_plot.png            # Global TreeSHAP feature attribution beeswarm plot
+│   │   ├── shap_patient_waterfall.png       # Local patient observation TreeSHAP waterfall decomposition
+│   │   ├── financial_roi_summary.json       # CMS HRRP penalty impact and institutional ROI balance
+│   │   └── psi_drift_report.json            # Population Stability Index (PSI) drift monitoring audit
+│   └── chroma_hf_rag/                       # Vector store directory with persistent ChromaDB index
+│
+├── guidelines/
+│   ├── .gitkeep                             # Directory persistence placeholder
+│   └── aha_hf_guidelines_2022.json          # Structured 2022 AHA/ACC/HFSA Heart Failure practice guidelines
+│
+├── notebooks/
+│   ├── .gitkeep                             # Directory persistence placeholder
+│   └── 01_ACAT_Acute_Care_Agentic_Triage.ipynb # Complete 6-phase research and demonstration notebook
+│
+├── src/
+│   ├── __init__.py                          # Package initialization marker
+│   ├── data_pipeline.py                     # BigQuery OMOP extraction and StratifiedGroupKFold partitioning
+│   ├── model.joblib                         # Serialized cost-sensitive LightGBM classifier binary
+│   ├── model_metadata.json                  # Model hyperparameter, feature list, and decision threshold registry
+│   ├── model_engine.py                      # CardiacRiskEngine: LightGBM inference & native TreeSHAP attribution
+│   ├── rag_engine.py                        # ClinicalGuidelineRAG: ChromaDB semantic search with hemodynamic filtering
+│   └── agents.py                            # MultiAgentClinicalOrchestrator: 4-agent consensus engine & Gradio UI
+│
+└── tests/
+    └── .gitkeep                             # Unit test suite directory placeholder
+```
+---
+## Quickstart & Execution Protocol
+
+### 1. Environment Configuration & Dependencies
+Clone the repository and install the validated clinical machine learning and multi-agent libraries:
+
+```bash
+# Clone the repository
+git clone [https://github.com/nmemranhussain/Project-ACAT.git](https://github.com/nmemranhussain/Project-ACAT.git)
+cd Project-ACAT
+
+# Install dependencies in a clean virtual environment
+pip install -r requirements.txt
+```
+### 2. Sequential Pipeline Execution Protocol
+
+The pipeline can be audited or reproduced either through the modular `src/` modules or sequentially within `notebooks/01_ACAT_Acute_Care_Agentic_Triage.ipynb`:
+
+#### Phase 1 & 2: OMOP CDM Extraction & Leakage-Free Cohort Partitioning
+- Authenticates with Google Cloud BigQuery (`bigquery-public-data.cms_synthetic_patient_data_omop`).
+- Queries primary inpatient heart failure encounters, applies strict 30-day acute readmission lookaheads, and extracts lookback comorbidities without retrospective target contamination[cite: 7].
+- Executes 5-fold `StratifiedGroupKFold` grouped strictly by `person_id`, saving `train.parquet` (39,986 encounters) and `test.parquet` (10,014 encounters) with guaranteed 0% patient leakage[cite: 7, 15].
+
+#### Phase 3: Cost-Sensitive LightGBM Training & Native TreeSHAP Explainability
+- Computes dynamic class weighting (`scale_pos_weight = 4.7221`) and trains the LightGBM classifier[cite: 15].
+- Derives the utility-optimal operating threshold ($\tau^* = 0.7269$) via Precision-Recall curve optimization[cite: 15].
+- Evaluates holdout test performance ($\text{ROC-AUC} = 0.9245$, $\text{PR-AUC} = 0.7327$, $F_1 = 0.6741$)[cite: 15].
+- Calculates observation-level TreeSHAP attributions and serializes `src/model.joblib`, `src/model_metadata.json`, and visual SHAP plots[cite: 14, 16, 17].
+
+#### Phase 4: Clinical Guidelines Vector Store & Dense RAG Engine
+- Ingests evidence-based recommendations from `guidelines/aha_hf_guidelines_2022.json`.
+- Splits and embeds guideline chunks into a local ChromaDB vector store using Google Vertex AI `text-embedding-004`.
+- Encapsulates semantic search filtered on LVEF, hypotension, and renal contraindications within `src/rag_engine.py`.
+
+#### Phase 5: Multi-Agent Consensus Orchestration & Gradio Dashboard
+- Initializes the 4-tier consensus pipeline in `src/agents.py` using Gemini 2.5 Flash and Pydantic schemas.
+- Executes the full pipeline: Agent 1 (Vitals Normalizer) $\rightarrow$ Agent 2 (Risk Analyst) $\rightarrow$ Agent 3 (Guideline Specialist) $\rightarrow$ Agent 4 (Bedside Clinical Auditor).
+- Launches an interactive Gradio triage interface for real-time unstructured EHR narrative auditing and contraindication cross-checking.
+
+#### Phase 6: Healthcare Economic Modeling & Production Drift Auditing
+- Computes institutional financial impact under CMS HRRP readmission penalty benchmarks, saving `financial_roi_summary.json`.
+- Simulates seasonal cardiorenal demographic drift and calculates the Population Stability Index (PSI) across key clinical biomarkers, saving `psi_drift_report.json`.
