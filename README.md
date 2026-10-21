@@ -7,7 +7,6 @@
 [![Clinical Guidelines: 2022 AHA/ACC/HFSA](https://img.shields.io/badge/Clinical%20Guidelines-2022%20AHA%2FACC%2FHFSA-green.svg)](https://www.ahajournals.org/doi/10.1161/CIR.0000000000001063)
 
 ## Abstract
-### Project ACAT: Acute Care Risk Prediction and Guideline-Informed Decision Support
 
 - **Research Objective:** Investigated methods for developing and evaluating a clinical decision-support prototype for predicting 30-day cardiac readmission risk, interpreting model predictions, and checking generated clinical summaries against heart failure guidelines.
 
