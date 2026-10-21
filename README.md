@@ -7,20 +7,25 @@
 [![Clinical Guidelines: 2022 AHA/ACC/HFSA](https://img.shields.io/badge/Clinical%20Guidelines-2022%20AHA%2FACC%2FHFSA-green.svg)](https://www.ahajournals.org/doi/10.1161/CIR.0000000000001063)
 
 ## Abstract
-Unplanned 30-day readmissions and post-discharge mortality following acute heart failure (HF) exacerbations represent severe clinical complications and drive substantial institutional financial penalties under the Centers for Medicare & Medicaid Services (CMS) Hospital Readmissions Reduction Program (HRRP). In contemporary hospital settings, predictive Clinical Decision Support Systems (CDSS) frequently fail translational deployment due to four systemic vulnerabilities:
-1. **Patient Identity Leakage:** Longitudinal data corruption caused by randomly partitioning multi-encounter patients across train and test splits.
-2. **Probability Distortion under Class Imbalance:** Miscalibrated risk estimates arising from the low real-world prevalence of acute cardiovascular readmission events (~16–18%).
-3. **Suboptimal Arbitrary Decision Boundaries:** Reliance on default classification thresholds ($\tau = 0.50$) that ignore asymmetric clinical costs (where missing a deteriorating patient carries far higher penalty than issuing a routine care-management call).
-4. **Ungrounded Generative Hallucinations:** Downstream Large Language Model (LLM) clinical summaries recommending pharmacotherapies that directly violate hemodynamic contraindications (e.g., initiating vasodilators during acute cardiogenic hypotension).
+### Project ACAT: Acute Care Risk Prediction and Guideline-Informed Decision Support
 
-**Project ACAT (Acute Care Agentic Triage)** re-engineers this predictive and triage pathway into an end-to-end, reproducible, research-grade clinical data science system. Evaluated on an untouched holdout audit cohort of 10,014 clinical encounters, Project ACAT demonstrates:
-- **Zero Patient Leakage:** Patient-level isolation via 5-fold `StratifiedGroupKFold` on 50,000 encounters extracted from the CMS Synthetic Public Schema in OMOP CDM v5.3 format, strictly segregating 38,516 training patients from 9,628 audit test patients.
-- **Cost-Sensitive Minority Calibration:** Training a gradient-boosted LightGBM ensemble under dynamically weighted class penalties (`scale_pos_weight = 4.7221`), achieving an out-of-sample **ROC-AUC of 0.9245** and **PR-AUC of 0.7327**.
-- **Utility-Optimal Operating Cutoff:** Derivation of a cost-weighted decision boundary ($\tau^* = 0.7269$) via empirical Precision-Recall curve optimization, securing an out-of-sample minority **F1-Score of 0.6741** (Precision: 65.08%, Recall: 69.92%).
-- **Observation-Level TreeSHAP Explainability:** Native extraction of local Shapley attributions without heuristic probability overrides, mathematically isolating cardiorenal impairment (`serum_creatinine`, `ejection_fraction`, `systolic_bp`) as primary log-odds drivers.
-- **Grounded Multi-Agent Decision Support:** A 4-agent consensus orchestration pipeline powered by Gemini 2.5 Flash and Pydantic schemas, integrating dense vector retrieval (ChromaDB + `text-embedding-004`) over the *2022 AHA/ACC/HFSA Heart Failure Guidelines* to deterministically audit bedside contraindications.
-- **Translational Financial Impact & MLOps Governance:** CMS HRRP penalty modeling establishing **+$29,144,776.00** in preserved hospital clinical value, paired with background Population Stability Index (PSI) drift monitoring triggering automated retraining alerts under demographic shifts.
+- **Research Objective:** Investigated methods for developing and evaluating a clinical decision-support prototype for predicting 30-day cardiac readmission risk, interpreting model predictions, and checking generated clinical summaries against heart failure guidelines.
 
+- **Data and Cohort Construction:** Used 50,000 encounters from the CMS synthetic patient dataset mapped to OMOP CDM v5.3 through Google BigQuery. Implemented patient-level partitioning with StratifiedGroupKFold, producing 39,986 training encounters and 10,014 holdout audit encounters, with no shared patient IDs reported between the partitions.
+
+- **Predictive Modeling:** Trained a class-weighted LightGBM classifier to address outcome imbalance. The repository reports holdout ROC-AUC of 0.9245 and PR-AUC of 0.7327 for the defined 30-day cardiac readmission outcome.
+
+- **Decision-Threshold Analysis:** Evaluated classification performance at a threshold of 0.7269, reporting an F1-score of 0.6741, precision of 65.08%, and recall of 69.92%. The threshold-selection procedure should be evaluated separately from final test performance to avoid optimistic estimates.
+
+- **Model Interpretability:** Used TreeSHAP to examine feature contributions to individual predictions and identify influential variables, including serum creatinine, ejection fraction, and systolic blood pressure. These analyses describe model behavior rather than establishing causal relationships.
+
+- **Guideline-Informed Decision Support:** Implemented a four-stage workflow combining Gemini 2.5 Flash, Pydantic schemas, and ChromaDB retrieval from the 2022 AHA/ACC/HFSA heart failure guidelines. The prototype generates structured summaries and flags potential contraindication-related concerns for human review.
+
+- **Financial Modeling and Monitoring:** Developed an HRRP-related financial scenario model using assumed readmission costs, care-coordination reimbursement, outreach costs, and intervention effectiveness. Added Population Stability Index (PSI) calculations to examine changes in clinical feature distributions and illustrate potential monitoring alerts.
+
+- **Limitations and Future Research:** The study uses synthetic data and does not establish clinical effectiveness, external generalizability, or realized hospital savings. Future work includes independent clinical validation, calibration assessment, subgroup evaluation, prospective threshold selection, and systematic testing of guideline-related alerts.
+
+- **Research Contribution:** Integrates patient-level cohort partitioning, imbalanced classification, model interpretation, guideline retrieval, and distribution monitoring into a reproducible clinical decision-support research prototype.
 ---
 
 ## Research Questions & Hypotheses
